@@ -121,6 +121,7 @@
             length = Object.keys(holdings).length;
           }
 
+          $('#' + id).append('<p>' + Drupal.t('We have @count reservable copies.', {'@count': Drupal.DADB[entity_id]['reservable_count']}) + ' ' + Drupal.t('There are @count users in queue to loan the material', {'@count': Drupal.DADB[entity_id]['reserved_count']}) + '</p>');
 
           if (length > 0) {
             $('#' + id).append('<h2>' + Drupal.t('Holdings available on the shelf') + '</h2>');
