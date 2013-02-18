@@ -106,29 +106,20 @@
 
       function updateHoldings(id, entity_ids) {
         var entity_id = entity_ids.pop();
-        if (Drupal.DADB[entity_id] && (Drupal.DADB[entity_id]['holdings'] || Drupal.DADB[entity_id]['holdings_available'])) {
-          var holdings;
-          var length;
+        if (Drupal.DADB[entity_id] && Drupal.DADB[entity_id]['holdings']) {
+          var holdings = Drupal.DADB[entity_id]['holdings'];
+          var length = holdings.length;
 
-          // Use holdings_available, if set and entity is not a periodical.
-          if (Drupal.DADB[entity_id]['holdings_available'] && !Drupal.DADB[entity_id]['is_periodical'] ) {
-            holdings = Drupal.DADB[entity_id]['holdings_available'];
-            length = holdings.length;
-          }
-          else {
-            holdings = Drupal.DADB[entity_id]['holdings'];
-            //holdings is an object - not array
-            length = Object.keys(holdings).length;
-          }
-
+          $('#' + id).append('<h2>' + Drupal.t('Holdings') + '</h2>');
           $('#' + id).append('<p>' + Drupal.t('We have @count reservable copies.', {'@count': Drupal.DADB[entity_id]['reservable_count']}) + ' ' + Drupal.t('There are @count users in queue to loan the material', {'@count': Drupal.DADB[entity_id]['reserved_count']}) + '</p>');
 
           if (length > 0) {
-            $('#' + id).append('<h2>' + Drupal.t('Holdings available on the shelf') + '</h2>');
             $('#' + id).append('<ul>');
             var container = $('#' + id + ' ul');
             $.each(holdings, function(i, holding) {
-              container.append('<li>' + holding + '</li>');
+              var holding_string = holding['location'].join(' → ');
+              holding_string += ' ' + Drupal.t('(@count copies home)', {'@count': holding['available_count']});
+              container.append('<li>' + holding_string + '</li>');
             });
           }
         }

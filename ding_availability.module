@@ -25,6 +25,14 @@ function ding_availability_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/config/ding/availability'] = array(
+    'title' => 'Ding availability',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ding_availability_admin_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'ding_availability.admin.inc',
+  );
+
   return $items;
 }
 
@@ -82,7 +90,7 @@ function ding_availability_items($provider_ids) {
  *
  */
 function ding_availability_holdings($provider_ids) {
-  $items = ding_provider_invoke('availability', 'holdings', $provider_ids);
+  $items = ding_provider_invoke('availability', 'holdings', $provider_ids, variable_get('ding_availability_only_available', TRUE));
   if (!$items) {
     return array();
   }
