@@ -49,6 +49,27 @@ function ding_availability_ding_provider_user() {
 }
 
 /**
+ * Implements hook_theme();
+ */
+function ding_availability_theme($existing, $type, $theme, $path) {
+  return array(
+    'ding_availability' => array(
+      'template' => 'ding-availability',
+      'variables' => array(
+        'status' => NULL,
+        'reservable' => NULL,
+        'available' => NULL,
+        'holdings' => NULL,
+        'total_count' => NULL,
+        'reservable_count' => NULL,
+        'reserved_count' => NULL,
+      ),
+      'path' => $path . '/templates',
+    ),
+  );
+}
+
+/**
  *
  */
 function ding_availability_js($provider_ids) {
@@ -101,6 +122,28 @@ function ding_availability_holdings($provider_ids) {
       'holdings' => array(),
     );
     _ding_availability_text($item);
+    foreach ($item['holdings'] as $holding) {
+      $rows[] = array(
+        'placement' => join(' → ', $holding['location']),
+        'home' => $holding['available_count'],
+      );
+    }
+    $holdings = theme('table__ding_availability', array(
+      'header' => array(
+        'placement' => t('Placement'),
+        'home' => t('Home'),
+      ),
+      'rows' => $rows,
+    ));
+    $item['html'] = theme('ding_availability', array(
+      'status' => $item['status'],
+      'reservable' => $item['reservable'],
+      'available' => $item['available'],
+      'holdings' => $holdings,
+      'total_count' => $item['total_count'],
+      'reservable_count' => $item['reservable_count'],
+      'reserved_count' => $item['reserved_count'],
+    ));
   }
 
   return $items;

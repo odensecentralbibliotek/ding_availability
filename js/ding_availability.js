@@ -106,25 +106,8 @@
 
       function updateHoldings(id, entity_ids) {
         var entity_id = entity_ids.pop();
-        if (Drupal.DADB[entity_id] && Drupal.DADB[entity_id]['holdings']) {
-          var holdings = Drupal.DADB[entity_id]['holdings'];
-          var length = holdings.length;
-
-          $('#' + id).append('<h2>' + Drupal.t('Holdings') + '</h2>');
-          var summary_string = Drupal.formatPlural(Drupal.DADB[entity_id]['total_count'], 'We have 1 copy (@reservable_count reservable).', 'We have @count copies (@reservable_count reservable).', {'@reservable_count': Drupal.DADB[entity_id]['reservable_count']});
-          summary_string += ' ';
-          summary_string += Drupal.formatPlural(Drupal.DADB[entity_id]['reserved_count'], 'There is 1 user in queue to loan the material', 'There are @count users in queue to loan the material');
-          $('#' + id).append('<p>' + summary_string + '</p>');
-
-          if (length > 0) {
-            $('#' + id).append('<ul>');
-            var container = $('#' + id + ' ul');
-            $.each(holdings, function(i, holding) {
-              var holding_string = holding['location'].join(' → ');
-              holding_string += ' ' + Drupal.formatPlural(holding['available_count'], '(1 copy home)', '(@count copies home)');
-              container.append('<li>' + holding_string + '</li>');
-            });
-          }
+        if (Drupal.DADB[entity_id] && Drupal.DADB[entity_id]['html']) {
+          $('#' + id).append(Drupal.DADB[entity_id]['html']);
         }
       }
     }
