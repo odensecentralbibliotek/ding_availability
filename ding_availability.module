@@ -125,8 +125,11 @@ function ding_availability_holdings($provider_ids) {
     _ding_availability_text($item);
     foreach ($item['holdings'] as $holding) {
       $rows[] = array(
-        'placement' => join(' → ', $holding['location']),
-        'home' => $holding['available_count'],
+        'class' => array($holding['available_count'] > 0 ? 'available' : 'unavailable'),
+        'data' => array(
+          'placement' => join(' → ', $holding['location']),
+          'home' => $holding['available_count'],
+        ),
       );
     }
     $holdings = theme('table__ding_availability', array(
