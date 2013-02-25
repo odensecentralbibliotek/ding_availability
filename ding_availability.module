@@ -121,6 +121,7 @@ function ding_availability_holdings($provider_ids) {
       'available' => FALSE,
       'holdings' => array(),
     );
+    $rows = array();
     _ding_availability_text($item);
     foreach ($item['holdings'] as $holding) {
       $rows[] = array(
