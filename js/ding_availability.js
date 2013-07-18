@@ -79,21 +79,21 @@
           element.attr('title', Drupal.t('available'));
           // If availability is an link extrend information.
           if (settings.ding_availability_link === 1) {
-            $('a', element).append('<span class="availability-status">' + Drupal.t('available') + '<span>');
+            $('a', element).append('<span class="availability-status">&nbsp;(' + Drupal.t('available') + ')<span>');
           }
         }
         else if (!available && reservable) {
           element.attr('title', Drupal.t('on loan'));
           // If availability is an link extrend information.
           if (settings.ding_availability_link === 1) {
-            $('a', element).append('<span class="availability-status">' + Drupal.t('on loan') + '<span>');
+            $('a', element).append('<span class="availability-status">&nbsp;(' + Drupal.t('on loan') + ')<span>');
           }        }
 
         else if (!available && ! reservable) {
           element.attr('title', Drupal.t('unavailable'));
           // If availability is an link extrend information.
           if (settings.ding_availability_link === 1) {
-            $('a', element).append('<span class="availability-status">' + Drupal.t('unavailable') + '<span>');
+            $('a', element).append('<span class="availability-status">&nbsp;(' + Drupal.t('unavailable') + ')<span>');
           }
         }
       }
