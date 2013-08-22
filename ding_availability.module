@@ -97,6 +97,9 @@ function ding_availability_items($provider_ids) {
         'reservable' => FALSE,
         'available' => FALSE,
       );
+      if ($item['is_internet']) {
+        $item['available'] = FALSE;
+      }
       _ding_availability_text($item);
     }
   }
