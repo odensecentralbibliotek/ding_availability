@@ -100,8 +100,10 @@
 
       function updateHoldings(id, entity_ids) {
         var entity_id = entity_ids.pop();
-        var available = Drupal.DADB[entity_id]['available'];
-        var reservable = Drupal.DADB[entity_id]['reservable'];
+        var available = false;
+        var reservable = false;
+        var available = available || Drupal.DADB[entity_id]['available'];
+        var reservable = reservable || Drupal.DADB[entity_id]['reservable'];
         if (Drupal.DADB[entity_id] && Drupal.DADB[entity_id]['html']) {
           if (!available && !reservable) {
             return;
