@@ -102,9 +102,9 @@
         var entity_id = entity_ids.pop();
         var available = false;
         var reservable = false;
-        var available = available || Drupal.DADB[entity_id]['available'];
-        var reservable = reservable || Drupal.DADB[entity_id]['reservable'];
         if (Drupal.DADB[entity_id] && Drupal.DADB[entity_id]['html']) {
+          var available = available || Drupal.DADB[entity_id]['available'];
+          var reservable = reservable || Drupal.DADB[entity_id]['reservable'];
           if (!available && !reservable) {
             return;
           } else {
