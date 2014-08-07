@@ -75,7 +75,7 @@
           element.addClass('reservable');
         }
 
-        if (available && reservable) {
+        if ((available && reservable) || (available && !reservable)) {
           element.attr('title', Drupal.t('available'));
           // If availability is an link extrend information.
           if (settings.ding_availability_link === 1) {

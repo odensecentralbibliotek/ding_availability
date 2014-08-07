@@ -169,6 +169,9 @@ function _ding_availability_text(&$item) {
   elseif (!$item['available'] && !$item['reservable']) {
     $item['status'] = t('unavailable');
   }
+  elseif ($item['available'] && !$item['reservable']) {
+    $item['status'] = t('available');
+  }
 }
 
 
