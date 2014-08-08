@@ -105,7 +105,8 @@
         if (Drupal.DADB[entity_id] && Drupal.DADB[entity_id]['html']) {
           var available = available || Drupal.DADB[entity_id]['available'];
           var reservable = reservable || Drupal.DADB[entity_id]['reservable'];
-          if (!available && !reservable) {
+          var total_count = total_count || Drupal.DADB[entity_id]['total_count'];
+          if (!available && !reservable && total_count < 2) {
             return;
           } else {
             $('#' + id).append(Drupal.DADB[entity_id]['html']);
