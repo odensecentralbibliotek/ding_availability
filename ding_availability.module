@@ -160,6 +160,12 @@ function ding_availability_holdings($provider_ids) {
  * Adds the human readable status text of an item.
  */
 function _ding_availability_text(&$item) {
+  
+  foreach ($item['holdings'] as $key => $value) {
+    if ($value['available_count'] == 0){
+    $item['holdings'][$key]['available_count'] = t('Nothing');
+    }
+  }
   if ($item['available'] && $item['reservable']) {
     $item['status'] = t('available');
   }
