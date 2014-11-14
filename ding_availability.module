@@ -162,7 +162,10 @@ function ding_availability_holdings($provider_ids) {
 function _ding_availability_text(&$item) {
   
   foreach ($item['holdings'] as $key => $value) {
-    if ($value['available_count'] == 0){
+    if ($value['on_way'] == 1){
+    $item['holdings'][$key]['available_count'] = t('Bought/On way');
+    }
+    elseif ($value['available_count'] == 0){
     $item['holdings'][$key]['available_count'] = t('Nothing');
     }
   }
