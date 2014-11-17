@@ -163,7 +163,7 @@ function _ding_availability_text(&$item) {
   
   foreach ($item['holdings'] as $key => $value) {
     if ($value['on_way'] == 1){
-    $item['holdings'][$key]['available_count'] = t('Bought/On way') . ' '. $item['holdings'][$key]['ordered_count'];
+    $item['holdings'][$key]['available_count'] = t('Bought/On way') . ' '. $item['holdings'][$key]['ordered_count'] .' stk.';
     }
     elseif ($value['available_count'] == 0){
     $item['holdings'][$key]['available_count'] = t('Nothing');
