@@ -203,7 +203,7 @@ function ding_availability_block_info() {
  * Define availability legend block.
  */
 function ding_availability_block_view($delta = '') {
-  drupal_add_js(array('avail_spinner' => array('testspinner' => "/" . drupal_get_path('module','ding_availability') .'/images/spinner.gif')), 'setting');
+  drupal_add_js(array('avail_spinner' => array('spinner' => "/" . drupal_get_path('module','ding_availability') .'/images/spinner.gif')), 'setting');
   $block['subject'] = t('Ding availability legend');
   $block['content'] = ding_availability_render_legend();
   return $block;

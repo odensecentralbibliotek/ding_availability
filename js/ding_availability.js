@@ -29,7 +29,7 @@
       // Fetch availability.
       if (ids.length > 0) {
           //Insert spinner
-        $('.field-name-ding-availability-holdings').append('<span style="margin-left: 45%;width: 33%;" class="availability_spinner"><img src="'+ Drupal.settings.avail_spinner.testspinner +'" /></span>');
+        $('.field-name-ding-availability-holdings').append('<span style="margin-left: 45%;width: 33%;" class="availability_spinner"><img src="'+ Drupal.settings.avail_spinner.spinner +'" /></span>');
       
         $.getJSON(settings.basePath + 'ding_availability/' + (settings.ding_availability_mode ? settings.ding_availability_mode: 'items') + '/' + ids.join(','), {}, update);
       }
