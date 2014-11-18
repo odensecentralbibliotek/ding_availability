@@ -11,6 +11,7 @@ module_load_include('inc', 'ding_availability', 'ding_availability.field');
  * Implements hook_menu().
  */
 function ding_availability_menu() {
+  
   $items['ding_availability/items'] = array(
     'title' => 'Availability status',
     'page callback' => 'ding_availability_js',
@@ -32,7 +33,7 @@ function ding_availability_menu() {
     'access arguments' => array('administer site configuration'),
     'file' => 'ding_availability.admin.inc',
   );
-
+  
   return $items;
 }
 
@@ -152,7 +153,7 @@ function ding_availability_holdings($provider_ids) {
       'reserved_count' => $item['reserved_count'],
     ));
   }
-
+  
   return $items;
 }
 
@@ -193,6 +194,7 @@ function ding_availability_block_info() {
  * Define availability legend block.
  */
 function ding_availability_block_view($delta = '') {
+  drupal_add_js(array('avail_spinner' => array('testspinner' => "/" . drupal_get_path('module','ding_availability') .'/images/spinner.gif')), 'setting');
   $block['subject'] = t('Ding availability legend');
   $block['content'] = ding_availability_render_legend();
   return $block;

@@ -28,6 +28,9 @@
 
       // Fetch availability.
       if (ids.length > 0) {
+          //Insert spinner
+        $('.field-name-ding-availability-holdings').append('<span style="margin-left: 45%;width: 33%;" class="availability_spinner"><img src="'+ Drupal.settings.avail_spinner.testspinner +'" /></span>');
+      
         $.getJSON(settings.basePath + 'ding_availability/' + (settings.ding_availability_mode ? settings.ding_availability_mode: 'items') + '/' + ids.join(','), {}, update);
       }
       else {
@@ -53,6 +56,7 @@
             updateHoldings(id, entity_ids);
           }
         });
+        $('.availability_spinner').remove(); 
       }
 
       function updateAvailability(id, entity_ids) {
