@@ -62,10 +62,12 @@
       function updateAvailability(id, entity_ids) {
         var available = false;
         var reservable = false;
+        var on_way = false;
         $.each(entity_ids, function(index, entity_id) {
           if (Drupal.DADB[entity_id]) {
             available = available || Drupal.DADB[entity_id]['available'];
             reservable = reservable || Drupal.DADB[entity_id]['reservable'];
+            on_way = Drupal.DADB[entity_id]['on_way'];
           }
         });
 
@@ -88,11 +90,14 @@
         }
         else if (!available && reservable) {
           element.attr('title', Drupal.t('on loan'));
-          // If availability is an link extrend information.
-          if (settings.ding_availability_link === 1) {
+          if (on_way){
+              $('a', element).append('<span class="availability-status">&nbsp;(' + Drupal.t('Bought/On way') + ')<span>');
+          }
+            // If availability is an link extrend information.
+          else if (settings.ding_availability_link === 1) {
             $('a', element).append('<span class="availability-status">&nbsp;(' + Drupal.t('on loan') + ')<span>');
           }        }
-
+                
         else if (!available && ! reservable) {
           element.attr('title', Drupal.t('unavailable'));
           // If availability is an link extrend information.
