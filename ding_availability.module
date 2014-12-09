@@ -131,6 +131,7 @@ function ding_availability_holdings($provider_ids) {
     $closest_loan = NULL;
     _ding_availability_text($item);
     foreach ($item['holdings'] as $holding) {
+      if (is_array($item)) {
       // This item is considered to be waited for.
          // Next, the number of holdings is compared to reserved ones.
          // Also keep the next loan date.
@@ -141,7 +142,7 @@ function ding_availability_holdings($provider_ids) {
              $closest_loan = $next_loan_time;
            }
          }
-
+}
       $rows[] = array(
         'class' => array($holding['available_count'] > 0 ? 'available' : 'unavailable'),
         'data' => array(
@@ -209,7 +210,7 @@ function ding_availability_holdings($provider_ids) {
  * Adds the human readable status text of an item.
  */
 function _ding_availability_text(&$item) {
-  
+  if (isset($item['holdings'])){
   foreach ($item['holdings'] as $key => $value) {
     if ($value['on_way'] == 1){
     $item['holdings'][$key]['available_count'] = t('Bought/On way') . ' '. $item['holdings'][$key]['ordered_count'] .' stk.';
@@ -217,6 +218,7 @@ function _ding_availability_text(&$item) {
     elseif ($value['available_count'] == 0){
     $item['holdings'][$key]['available_count'] = t('Nothing');
     }
+  }
   }
   if ($item['available'] && $item['reservable']) {
     $item['status'] = t('available');
