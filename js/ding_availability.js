@@ -115,11 +115,11 @@
           var reservable = reservable || Drupal.DADB[entity_id]['reservable'];
           var total_count = total_count || Drupal.DADB[entity_id]['total_count'];
           if (!available && !reservable && total_count < 2) {
-              
+            $('.group-materiale-details').css('padding-top','5px'); // When the box is not shown. add some padding.
             return;
         }else if($('.field-name-ding-periodical-issues').length)
         {
-            $('.group-materiale-details').css('padding-top','5px');
+            $('.group-materiale-details').css('padding-top','5px'); // When the box is not shown. add some padding.
             $('.field-name-ding-availability-holdings').hide();
             return;
           } else {
