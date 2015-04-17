@@ -158,6 +158,9 @@ function ding_availability_holdings($provider_ids) {
       ),
       'rows' => $rows,
     ));
+    if ($item['is_periodical'] == '0') {
+     $closest_loan = (count($item['holdings']) == $copies) ? ding_availability_holding_format_time($closest_loan) : NULL;
+    }
     $item['html'] = theme('ding_availability', array(
       'status' => $item['status'],
       'reservable' => $item['reservable'],
@@ -166,7 +169,7 @@ function ding_availability_holdings($provider_ids) {
       'total_count' => $item['total_count'],
       'reservable_count' => $item['reservable_count'],
       'reserved_count' => $item['reserved_count'],
-      'closest_loan' => (count($item['holdings']) == $copies) ? ding_availability_holding_format_time($closest_loan) : NULL,
+      'closest_loan' => $closest_loan,
     ));
   }
   
