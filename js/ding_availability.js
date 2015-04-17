@@ -106,7 +106,6 @@
           }
         }
       }
-
       function updateHoldings(id, entity_ids) {
         var entity_id = entity_ids.pop();
         var available = false;
@@ -116,6 +115,11 @@
           var reservable = reservable || Drupal.DADB[entity_id]['reservable'];
           var total_count = total_count || Drupal.DADB[entity_id]['total_count'];
           if (!available && !reservable && total_count < 2) {
+              
+            return;
+        }else if($('.field-name-ding-periodical-issues').length)
+        {
+            $('.field-name-ding-availability-holdings').hide();
             return;
           } else {
             $('#' + id).append(Drupal.DADB[entity_id]['html']);
