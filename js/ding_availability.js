@@ -119,6 +119,7 @@
             return;
         }else if($('.field-name-ding-periodical-issues').length)
         {
+            $('.group-materiale-details').css('padding-top','5px');
             $('.field-name-ding-availability-holdings').hide();
             return;
           } else {
