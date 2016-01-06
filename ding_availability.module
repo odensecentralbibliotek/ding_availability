@@ -121,7 +121,6 @@ function ding_availability_items($provider_ids) {
  *
  */
 function ding_availability_holdings($provider_ids) {
-    xdebug_break();
   $items = ding_provider_invoke('availability', 'holdings', $provider_ids, variable_get('ding_availability_only_available', TRUE));
   if (!$items) {
     return array();
