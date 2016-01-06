@@ -75,7 +75,12 @@ function ding_availability_theme($existing, $type, $theme, $path) {
  *
  */
 function ding_availability_js($provider_ids) {
-  drupal_json_output(ding_availability_items(explode(',', $provider_ids)));
+    /*
+     * In Order to handle broken materials correctly , we have to use this
+     * more heavy function to retrive availability status.
+     */
+    drupal_json_output(ding_availability_holdings(explode(',', $provider_ids)));
+  //drupal_json_output(ding_availability_items(explode(',', $provider_ids)));
 }
 
 /**
@@ -116,11 +121,12 @@ function ding_availability_items($provider_ids) {
  *
  */
 function ding_availability_holdings($provider_ids) {
+    xdebug_break();
   $items = ding_provider_invoke('availability', 'holdings', $provider_ids, variable_get('ding_availability_only_available', TRUE));
   if (!$items) {
     return array();
   }
-  foreach ($items as &$item) {
+  foreach ($items as $key => &$item) {
     $item += array(
       'reservable' => FALSE,
       'available' => FALSE,
@@ -142,7 +148,27 @@ function ding_availability_holdings($provider_ids) {
              $closest_loan = $next_loan_time;
            }
          }
-}
+         /*
+          * Special status when a material is being repaired , is often seen
+          * with dvd's. This is likely very special for OC library system.
+          * Sollution: rset holding level to 0. keeping reservable to get red 
+          * status , but the materials wont be reseverable.
+          */
+         if(isset($holding['location'][2]) && $holding['location'][2] == "Kontor")
+         {
+            $holding['available_count'] =  $holding['available_count']-1;
+            if($holding['available_count'] == 0)
+            {
+                $holding['available_count'] = "ingen";
+            }
+            $item['total_count'] =  $item['total_count']-1;
+            if($item['total_count'] == 0)
+            {
+                $item['available'] = false;
+                $item['reservable'] = true;
+            }
+         }
+    }
       $rows[] = array(
         'class' => array($holding['available_count'] > 0 ? 'available' : 'unavailable'),
         'data' => array(
