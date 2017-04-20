@@ -171,7 +171,7 @@ function ding_availability_holdings($provider_ids) {
       $rows[] = array(
         'class' => array($holding['available_count'] > 0 ? 'available' : 'unavailable'),
         'data' => array(
-          'placement' => join(' → ', $holding['location']),
+          'placement' => join(' → ', $holding['placement']), //fbs index
           'home' => $holding['available_count'],
         ),
       );
