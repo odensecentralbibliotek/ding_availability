@@ -15,6 +15,7 @@
  */
 
 $total_text = format_plural($total_count, 'We have 1 copy (@reservable_count reservable).', 'We have @count copies (@reservable_count reservable).', array('@reservable_count' => $reservable_count));
+$reserved_count = $reserved_count ? $reserved_count : 0;
 $reserved_text = format_plural($reserved_count, 'There is 1 user in queue to loan the material', 'There are @count users in queue to loan the material');
 ?>
 <h2><?php print t('Holdings'); ?> </h2>
