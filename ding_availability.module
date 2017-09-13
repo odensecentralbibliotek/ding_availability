@@ -240,7 +240,7 @@ function ding_availability_holdings($provider_ids) {
 function _ding_availability_text(&$item) {
   if (isset($item['holdings'])){
   foreach ($item['holdings'] as $key => $value) {
-    if ($value['on_way'] == 1){
+    if (isset($value['on_way']) &&  $value['on_way'] == 1){
     $item['holdings'][$key]['available_count'] = t('Bought/On way') . ' '. $item['holdings'][$key]['ordered_count'] .' stk.';
     }
     elseif ($value['available_count'] == 0){
