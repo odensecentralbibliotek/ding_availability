@@ -153,6 +153,17 @@ function ding_availability_holdings($provider_ids) {
           * Sollution: rset holding level to 0. keeping reservable to get red 
           * status , but the materials wont be reseverable.
           */
+          //check if it is in a non home location
+         $non_home_locations = explode(PHP_EOL,variable_get('fbs_nonhome_locations', ''));
+               foreach ($holding['placement'] as $part) {
+          foreach($non_home_locations as $non_home)
+          {
+              if(!strcmp(trim($part),trim($non_home)))
+              {
+                  $holding['available_count'] = "Kan ikke reserveres";
+              }
+          }
+               }
          if(isset($holding['location'][2]) && $holding['location'][2] == "Kontor")
          {
             $holding['available_count'] =  $holding['available_count']-1;
