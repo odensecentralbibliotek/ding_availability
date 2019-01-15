@@ -23,7 +23,7 @@ function ding_availability_admin_settings_form($form, &$form_state) {
   $form['settings']['ding_availability_holdings_types'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Types'),
-    '#options' => drupal_map_assoc($types),
+    '#options' => drupal_map_assoc(array_keys(variable_get('ting_well_types', array()))),
     '#default_value' => variable_get('ding_availability_holdings_types', _ding_availability_holdings_default_types()),
   );
   
