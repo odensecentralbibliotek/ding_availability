@@ -18,6 +18,8 @@ function ding_availability_admin_settings_form($form, &$form_state) {
     '#title' => t('Only show holdings for branches where the material is available.'),
     '#default_value' => variable_get('ding_availability_only_available', TRUE),
   );
+  // Get available types.
+  $types = array_flip(variable_get('ting_well_types', array()));
   $form['settings']['ding_availability_holdings_types'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Types'),
