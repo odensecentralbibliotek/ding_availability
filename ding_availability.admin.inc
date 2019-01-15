@@ -18,6 +18,12 @@ function ding_availability_admin_settings_form($form, &$form_state) {
     '#title' => t('Only show holdings for branches where the material is available.'),
     '#default_value' => variable_get('ding_availability_only_available', TRUE),
   );
-
+  $form['settings']['ding_availability_holdings_types'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Types'),
+    '#options' => drupal_map_assoc($types),
+    '#default_value' => variable_get('ding_availability_holdings_types', _ding_availability_holdings_default_types()),
+  );
+  
   return system_settings_form($form);
 }

@@ -130,12 +130,33 @@ function ding_availability_field_formatter_settings_summary($field, $instance, $
 
   return $summary;
 }
-
+/*
+ * Determins if we should get availability on a field
+ */
+function ding_availability_should_get_availability($entity)
+{
+    $allowed = variable_get('ding_availability_holdings_types', _ding_availability_holdings_default_types());
+    if($entity instanceof TingCollection)
+    {
+        return true;
+    }
+    else if($entity instanceof TingEntity)
+    {
+        $type = strtolower($entity->getType());
+        if(in_array($type, $allowed))
+        {
+            return true;
+        }
+    }
+       
+    return false;
+}
 /**
  * Implements hook_field_formatter_view().
  */
 function ding_availability_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
+  $update_availability = ding_availability_should_get_availability($entity);
   foreach ($items as $delta => $item) {
     $attached = array(
       'js' => array(
@@ -150,20 +171,22 @@ function ding_availability_field_formatter_view($entity_type, $entity, $field, $
 
     switch ($field['type']) {
       case 'ding_availability_holdings':
-        // Generate an unique id.
-        $id = drupal_html_id('holdings-' . $entity->id);
-        $attached['js'][1] = array(
-          'data' => array(
-            'ding_availability_mode' => 'holdings',
-            'ding_availability' => array(
-              $id => array($entity->localId),
-            ),
-          ), 'type' => 'setting');
+        if($update_availability){
+            // Generate an unique id.
+            $id = drupal_html_id('holdings-' . $entity->id);
+            $attached['js'][1] = array(
+              'data' => array(
+                'ding_availability_mode' => 'holdings',
+                'ding_availability' => array(
+                  $id => array($entity->localId),
+                ),
+              ), 'type' => 'setting');
 
-        $element[$delta] = array(
-          '#markup' => '<div id="' . $id . '" class="holdings holdings-' . $entity->localId . '"></div>',
-          '#attached' => $attached,
-        );
+            $element[$delta] = array(
+              '#markup' => '<div id="' . $id . '" class="holdings holdings-' . $entity->localId . '"></div>',
+              '#attached' => $attached,
+            );
+        }
         break;
 
       case 'ding_availability_item':
@@ -175,25 +198,50 @@ function ding_availability_field_formatter_view($entity_type, $entity, $field, $
 
       case 'ting_type':
         // Generate an unique id.
-        $id = drupal_html_id('availability-' . $entity->id);
+        
+        if($update_availability)
+        {
+            $id = drupal_html_id('availability-' . $entity->id);
+        }
+        else
+        {
+            $id = "";
+        }
+        
         $attached['js'][1] = array(
           'data' => array(
             'ding_availability' => array(
               $id => array($entity->localId),
             ),
           ), 'type' => 'setting');
-
-        $element[$delta] = array(
-          '#theme' => 'item_list',
-          '#attached' => $attached,
-          '#items' => array(
-            array(
-              'data' => $entity->type,
-              'id' => $id,
-              'class' => array('availability', drupal_html_class($entity->type)),
-            )
-          ),
-        );
+        if($update_availability)
+        {
+            $element[$delta] = array(
+              '#theme' => 'item_list',
+              '#attached' => $attached,
+              '#items' => array(
+                array(
+                  'data' => $entity->type,
+                  'id' => $id,
+                  'class' => array('availability', drupal_html_class($entity->type)),
+                )
+              ),
+            );
+        }
+        else
+        {
+            $element[$delta] = array(
+              '#theme' => 'item_list',
+              '#attached' => $attached,
+              '#items' => array(
+                array(
+                  'data' => $entity->type,
+                  'id' => $id,
+                  'class' => array('availability processed', drupal_html_class($entity->type)),
+                )
+              ),
+            );
+        }
         break;
 
       case 'ting_collection_types':
@@ -205,8 +253,13 @@ function ding_availability_field_formatter_view($entity_type, $entity, $field, $
         }
 
         foreach ($typed_entities as $type => $entities) {
+            $update_availability = ding_availability_should_get_availability($entities[0]);
           // Generate an unique id.
-          $id = drupal_html_id('availability-' . $entities[0]->id . '-' . $type);
+            $id = "";
+            if($update_availability)
+            {
+                $id = drupal_html_id('availability-' . $entities[0]->id . '-' . $type);
+            }
 
           // Convert type into link.
           if ($display['settings']['link']) {
@@ -217,21 +270,42 @@ function ding_availability_field_formatter_view($entity_type, $entity, $field, $
             } else {
               $url = entity_uri('ting_collection', $entities[0]);
             }
-            $type = l($type, $url['path'], $url['options']);
+            if($update_availability)
+            {
+                $type = l($type, $url['path'], $url['options']);
+            }
+            else
+            {
+                $type = l($type . " (" . t('unavailable') . ")", $url['path'], $url['options']);
+            }
             
           }
 
           // Create a list element for each type.
-          $types[] = array(
-            'data' => $type,
-            'id' => $id,
-            'class' => array('availability', drupal_html_class($type)),
-          );
-
           $ids = array();
-          foreach ($entities as $object_entity) {
-             $ids[] = $object_entity->localId;
-          }
+           if($update_availability)
+            {
+                $types[] = array(
+                  'data' => $type,
+                  'id' => $id,
+                  'class' => array('availability', drupal_html_class($type)),
+                );
+                foreach ($entities as $object_entity) {
+                $ids[] = $object_entity->localId;
+             }
+            }
+            else
+            {
+                $types[] = array(
+                  'data' => $type,
+                  'id' => $id,
+                  'class' => array('availability processed', drupal_html_class($type)),
+                );
+                
+            }
+
+          
+          
           // Map the HTML id to the list of entity ids.
           $id_mapping[$id] = $ids;
         }
